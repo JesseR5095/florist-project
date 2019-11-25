@@ -1,95 +1,87 @@
-<html>
-<head>
-    <meta charset="utf-8">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
     
+    <meta charset="utf-8">
+
     <title>Florist Project</title>
+    <meta name="description" content="Prepare digitized handwritten letters for printing.">
+    <meta name="author" content="Jesse Rafalko">
 
-    <style>
-  
-      
-      body {
-        margin: 0;
-        padding: 0;
-        background-color: #2aa198;
-      }
-      
-      canvas {
-        width: 100%;
-      }
-      
-      #hidden-canvas {
-        display: none;
-      }
-      
-      
-    </style>
-</head>
-<body>
-	
-    <input type="file" accept="image/*" id="file-input">
-  
-    <canvas id="canvas"></canvas>
-  
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+    <!-- VENDOR CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
+
+    <link rel="stylesheet" href="style.css">
+
+  </head>
+  <body>
+    
+    
     <canvas id="hidden-canvas"></canvas>
-  
-	
-    <script>
-      
-      const fileInput = document.getElementById('file-input');
-      const canvas = document.getElementById('canvas');
-      
-      const hiddenCanvas = document.getElementById('hidden-canvas');
-      const hiddenCtx = hiddenCanvas.getContext('2d');
-      
-      const ctx = canvas.getContext('2d');
-      const img = new Image();
-      
-      const bg = new Image();
-      bg.src = 'seamless.jpg';
-      
-      function processImage(f) {
-        img.onload = function() {
-          const h = img.height;
-          const w = img.width;
-          
-          canvas.height = h;
-          canvas.width = w;
-          
-          hiddenCanvas.height = h;
-          hiddenCanvas.width = w;
-          
-          ctx.drawImage(img, 0, 0);
-          
-          const imageData = ctx.getImageData(0, 0, w, h);
-          
-          for(let i=0; i < imageData.data.length; i+=4) {
-            const luma = Math.floor(imageData.data[i] * 0.3 + imageData.data[i+1] * 0.59 + imageData.data[i+2] * 0.11);
-            
-            imageData.data[i] = imageData.data[i+1] = imageData.data[i+2] = luma;
-            
-            if(luma < 75) 
-              imageData.data[i+3] = 255;
-            else if(luma < 80)
-              imageData.data[i+3] = 100;
-            else
-              imageData.data[i+3] = 0;
-          }
-          
-          hiddenCtx.putImageData(imageData, 0, 0);
-          
-          const pattern = ctx.createPattern(bg, 'repeat');
-          ctx.fillStyle = pattern;
-          ctx.fillRect(0, 0, w, h)
-          
-          ctx.drawImage(hiddenCanvas, 0, 0);
-        }
-        
-        img.src = URL.createObjectURL(f[0]);
-      }
 
-      fileInput.addEventListener('change', (e) => processImage(e.target.files));
-      
-    </script>
-</body>
+    <h1 id="title">Step One: </h1>
+    <h2 id="subtitle">Upload a picture of your handwritten note.</h2>
 
+    <div id="upload-file">
+      <input type="file" accept="image/*" id="file-input" class="hidden">
+      <button class="choose-file" onClick="triggerUpload()">Choose File</button>
+    </div>
+    
+    <div id="frame-confirm" class="">
+      <canvas id="confirm-canvas"></canvas>
+
+      <div class="format-preview">
+        <span>Aspect Ratio
+          <form name="ratioRadio">
+            <input type="radio" name="aspectRatio" value="card" checked>Card
+            <input type="radio" name="aspectRatio" value="letter">Letter
+          </form>
+        </span>
+        <span>Scale <input type="range" min="100" max="200" value="100" id="format-scale"></span>
+        <span><button id="format-rotate" onClick="rotateCCW()">Rotate Counter-Clockwise</button></span>
+        <span><button id="format-next" onClick="goToAdjust()">Next</button></span>
+      </div>
+    </div>
+
+    <div id="preview-adjust" class="hidden">
+      <canvas id="preview-canvas"></canvas>
+
+      <div class="format-preview" id="preview-ui">
+        <span>Pattern
+          <form name="patternRadio">
+            <input type="radio" name="pattern" value="0" checked>Paper
+            <input type="radio" name="pattern" value="1">Sky
+          </form>
+        </span>
+        <span>Threshold<input type="range" min="10" max="190" value="100" id="format-zoom"></span>
+        <span><input type="checkbox" name="toggle-trace">Image Trace</span>
+        <span><button id="format-next" onClick="goToConfirm()">Next</button></span>
+      </div>
+    </div>
+    
+    <div id="confirmation-ui" class="hidden">
+      <span><button id="format-rotate" onClick="rotateCCW()">Back to Edit</button></span>
+      <span><button id="format-next" onClick="goToAdjust()">Finish and Print</button></span>
+    </div>
+
+    
+    
+    <script src="getOrientation.js"></script>
+    
+    <script src="main.js"></script>
+    <script src="framingRenderer.js"></script>
+    <script src="processingRenderer.js"></script>
+
+    
+  </body>
 </html>
