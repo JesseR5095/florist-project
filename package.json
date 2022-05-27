@@ -1,7 +1,7 @@
 {
   "name": "florist-project",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.6.0",
+  "description": "Digitize a handwritten note or letter.",
   "main": "app.js",
   "dependencies": {
     "express": "^4.16.4"
@@ -15,6 +15,6 @@
     "start": "node app.js"
   },
   "keywords": [],
-  "author": "",
-  "license": ""
+  "author": "Jesse Rafalko",
+  "license": "MIT"
 }

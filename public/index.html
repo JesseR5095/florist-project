@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    
+
     <meta charset="utf-8">
 
     <title>Florist Project</title>
@@ -21,35 +21,34 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/favicon.png">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 
   </head>
   <body>
-    
-    
+
     <canvas id="hidden-canvas"></canvas>
 
-    <h1 id="title">Step One: </h1>
-    <h2 id="subtitle">Upload a picture of your handwritten note.</h2>
+    <span><h3 id="title">Step One: </h3></span>
+    <span><h4 id="subtitle">Upload a picture of your note.</h4></span>
 
     <div id="upload-file">
       <input type="file" accept="image/*" id="file-input" class="hidden">
-      <button class="choose-file" onClick="triggerUpload()">Choose File</button>
+      <button class="choose-file" onClick="uploadPicture()">Choose File</button>
     </div>
-    
+
     <div id="frame-confirm" class="">
       <canvas id="confirm-canvas"></canvas>
 
       <div class="format-preview">
-        <span>Aspect Ratio
+        <div><span>Aspect Ratio
           <form name="ratioRadio">
             <input type="radio" name="aspectRatio" value="card" checked>Card
             <input type="radio" name="aspectRatio" value="letter">Letter
           </form>
         </span>
-        <span>Scale <input type="range" min="100" max="200" value="100" id="format-scale"></span>
-        <span><button id="format-rotate" onClick="rotateCCW()">Rotate Counter-Clockwise</button></span>
-        <span><button id="format-next" onClick="goToAdjust()">Next</button></span>
+        <span>Scale <input type="range" min="100" max="200" value="100" id="format-scale"></span></div>
+        <div><span><button id="format-rotate" onClick="rotate()">Rotate Counter-Clockwise</button></span>
+        <span><button id="format-next" onClick="goToAdjust()">Next</button></span></div>
       </div>
     </div>
 
@@ -63,25 +62,18 @@
             <input type="radio" name="pattern" value="1">Sky
           </form>
         </span>
-        <span>Threshold<input type="range" min="10" max="190" value="100" id="format-zoom"></span>
+        <span>Threshold<input type="range" min="10" max="190" value="60" id="format-zoom"></span>
         <span><input type="checkbox" name="toggle-trace">Image Trace</span>
         <span><button id="format-next" onClick="goToConfirm()">Next</button></span>
       </div>
     </div>
-    
+
     <div id="confirmation-ui" class="hidden">
-      <span><button id="format-rotate" onClick="rotateCCW()">Back to Edit</button></span>
+      <span><button id="format-rotate" onClick="framing.rotate()">Back to Edit</button></span>
       <span><button id="format-next" onClick="goToAdjust()">Finish and Print</button></span>
     </div>
 
-    
-    
-    <script src="getOrientation.js"></script>
-    
-    <script src="main.js"></script>
-    <script src="framingRenderer.js"></script>
-    <script src="processingRenderer.js"></script>
+    <script src="js/script.js" type="module"></script>
 
-    
   </body>
 </html>

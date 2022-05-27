@@ -2,12 +2,21 @@ body {
   margin: 0 auto 0 auto;
   padding: 0;
   background-color: #2aa198;
-  max-width: 959px;
-  min-width: 768px;
+  max-width: 640px;
+  min-width: 320px;
 }
 
 canvas {
   cursor: pointer;
+}
+
+h3, h4 {
+  float: left;
+}
+
+span {
+  display: inline-block;
+  margin-right: 2vw;
 }
 
 #frame-confirm {
@@ -20,6 +29,7 @@ canvas {
 
 #confirm-canvas {
   border: 2px #cb4b16 dotted;
+  margin-left: -1px;
 }
 
 #hidden-canvas {
