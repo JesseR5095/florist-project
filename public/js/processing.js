@@ -21,15 +21,15 @@ const Processing = function ImageProcessingController() {
     for (let i = 0; i < imageData.data.length; i += 4) { // iterate over the imageData, incrementing by 4 in order to perform operations on individual pixel data at a time (red, green, blue, alpha)
       const luma = Math.floor(imageData.data[i] * 0.3 + imageData.data[i+1] * 0.59 + imageData.data[i + 2] * 0.11); // convert the image to greyscale by normalizing the r,g,b channels and setting them equal to one another
 
-      imageData.data[i] = imageData.data[i + 1] = imageData.data[i + 2] = (noteBackgrounds.current == 0) ? luma : 255 - luma;
+      imageData.data[i] = imageData.data[i + 1] = imageData.data[i + 2] = luma; //(noteBackgrounds.current == 0) ? luma : 255 - luma;
 
-      if (luma < threshold) { // determines the pixel's opacity based on its luma score.
+      if (imageData.data[i + 3] == 0) {
+        // 
+      } else if (luma < threshold) { // determines the pixel's opacity based on its luma score.
         imageData.data[i + 3] = 255;
-      }
-      else if (luma < threshold + 25) {
+      } else if (luma < threshold + 25) {
         imageData.data[i + 3] = (25 + threshold - luma) * 10;
-      }
-      else {
+      } else {
         imageData.data[i + 3] = 0;
       }
     }
@@ -124,7 +124,7 @@ const Processing = function ImageProcessingController() {
       previewAdjust.classList.remove('hidden');
 
       titleRef.innerHTML = "Step Three:";
-      subtitleRef.innerHTML = "Edit generated digital letter.";
+      subtitleRef.innerHTML = "Adjust and right-click to save.";
 
       previewCanvas.addEventListener("mousemove", mousemovePreview, false);
       previewCanvas.addEventListener("mousedown", mousedownPreview, false);

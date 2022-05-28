@@ -58,7 +58,7 @@ self.previewCtx = self.previewCanvas.getContext('2d'),
 self.hiddenCtx = self.hiddenCanvas.getContext('2d'),
 
 self.noteBackgrounds[0].src = 'seamless0.jpg'; // sets the background pattern to the local file path
-self.noteBackgrounds[1].src = 'seamless1.jpg';
+self.noteBackgrounds[1].src = 'seamless.png';
 self.noteBackgrounds.current = 0;
 
 self.confirmCanvas.width = self.w = (self.w < 639) ? self.w : 639;
