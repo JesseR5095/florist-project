@@ -85,8 +85,8 @@ const Framing = function ImageFramingController() {
       dragSprite.x = mouseX - (oldMouseX - dragSprite.x);
       dragSprite.y = mouseY - (oldMouseY - dragSprite.y);
 
-      dragSprite.x = (dragSprite.x < 0) ? dragSprite.x : 0;
-      dragSprite.y = (dragSprite.y < 0) ? dragSprite.y : 0;
+      // dragSprite.x = (dragSprite.x < 0) ? dragSprite.x : 0;
+      // dragSprite.y = (dragSprite.y < 0) ? dragSprite.y : 0;
 
       /*
         dragSprite.x = mouseX - (dragSprite.width / 2); // use this to drag the sprite from the center
@@ -186,12 +186,14 @@ const Framing = function ImageFramingController() {
 
     doRotation.call(this);
 
-    const newHeight = noteImage.height * confirmCanvas.width * scale / noteImage.height;
+    const newWidth = confirmCanvas.width * scale;
+
+    const newHeight = newWidth * hiddenCanvas.height / hiddenCanvas.width; //hiddenCanvas.height * confirmCanvas.width * scale / hiddenCanvas.height;
 
     drawingSurface.drawImage(
       hiddenCanvas,
       0, 0, hiddenCanvas.width, hiddenCanvas.height,
-      dragSprite.x, dragSprite.y, confirmCanvas.width * scale, newHeight
+      dragSprite.x, dragSprite.y, newWidth, newHeight
     );
   }
 
