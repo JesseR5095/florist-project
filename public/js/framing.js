@@ -60,8 +60,8 @@ const Framing = function ImageFramingController() {
 
   let mouseX = 0; // variables to store the mouse's position and velocity
   let mouseY = 0;
-  let oldMouseX = 0;
-  let oldMouseY = 0;
+  let oldMouseX = null;
+  let oldMouseY = null;
 
   const init = () => {
     image.addEventListener("load", loadHandler, false);
@@ -78,10 +78,10 @@ const Framing = function ImageFramingController() {
   }
 
   function mousemoveHandler(event) {
-    mouseX = event.pageX - this.confirmCanvas.offsetLeft; // find the mouse's x and y position on the canvas
-    mouseY = event.pageY - this.confirmCanvas.offsetTop;
+    mouseX = Math.floor(event.pageX) - this.confirmCanvas.offsetLeft; // find the mouse's x and y position on the canvas
+    mouseY = Math.floor(event.pageY) - this.confirmCanvas.offsetTop;
 
-    if (dragSprite.dragging === true) { // move the dragSprite if it's not null
+    if (dragSprite.dragging === true && oldMouseX !== null) { // move the dragSprite if it's not null
       dragSprite.x = mouseX - (oldMouseX - dragSprite.x);
       dragSprite.y = mouseY - (oldMouseY - dragSprite.y);
 
@@ -101,6 +101,20 @@ const Framing = function ImageFramingController() {
 
   function mouseupHandler(event) { // release the dragSprite by setting it to null
     dragSprite.dragging = false;
+
+    oldMouseX = null;
+  }
+
+  function touchstartHandler(event) {
+    mousedownHandler.call(this, event.targetTouches[0]);
+  }
+
+  function touchmoveHandler(event) {
+    mousemoveHandler.call(this, event.targetTouches[0]);
+  }
+
+  function touchendHandler(event) {
+    mouseupHandler.call(this, event.targetTouches[0]);
   }
 
   function loadHandler() {
@@ -234,6 +248,10 @@ const Framing = function ImageFramingController() {
       confirmCanvas.addEventListener("mousedown", mousedownHandler, false);
       window.addEventListener("mouseup", mouseupHandler, false);
 
+      confirmCanvas.addEventListener("touchmove", touchmoveHandler.bind(this), false); // event listeners
+      confirmCanvas.addEventListener("touchstart", touchstartHandler, false);
+      window.addEventListener("touchend", touchendHandler, false);
+
       scaleInput.addEventListener('input', updateScale.bind(this));
 
       let rot = 0;
@@ -291,6 +309,10 @@ const Framing = function ImageFramingController() {
       confirmCanvas.removeEventListener("mousemove", mousemoveHandler); // event listeners
       confirmCanvas.removeEventListener("mousedown", mousedownHandler);
       window.removeEventListener("mouseup", mouseupHandler);
+
+      confirmCanvas.removeEventListener("touchmove", touchmoveHandler); // event listeners
+      confirmCanvas.removeEventListener("touchstart", touchstartHandler);
+      window.removeEventListener("touchend", touchendHandler);
 
       scaleInput.removeEventListener('input', updateScale);
 
