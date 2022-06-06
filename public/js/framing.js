@@ -78,10 +78,13 @@ const Framing = function ImageFramingController() {
   }
 
   function mousemoveHandler(event) {
+    oldMouseX = mouseX; // capture the current mouse position to use in the next frame
+    oldMouseY = mouseY;
+
     mouseX = Math.floor(event.pageX) - this.confirmCanvas.offsetLeft; // find the mouse's x and y position on the canvas
     mouseY = Math.floor(event.pageY) - this.confirmCanvas.offsetTop;
 
-    if (dragSprite.dragging === true && oldMouseX !== null) { // move the dragSprite if it's not null
+    if (dragSprite.dragging === true) { // move the dragSprite if it's not null
       dragSprite.x = mouseX - (oldMouseX - dragSprite.x);
       dragSprite.y = mouseY - (oldMouseY - dragSprite.y);
 
@@ -94,15 +97,10 @@ const Framing = function ImageFramingController() {
       */
       update.call(this);
     }
-
-    oldMouseX = mouseX; // capture the current mouse position to use in the next frame
-    oldMouseY = mouseY;
   }
 
   function mouseupHandler(event) { // release the dragSprite by setting it to null
     dragSprite.dragging = false;
-
-    oldMouseX = null;
   }
 
   function touchstartHandler(event) {
